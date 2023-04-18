@@ -230,7 +230,7 @@ void BSP_TIMER_PWM_Init()
 	GPIOA->MODER &=~((1<<16)|(1<<18));
 	GPIOA->MODER |= ((1<<17) | (1<<19));
 
-	// metthode 3 pour ecrire 0010 sur les bits b3b2b1b0 et sur les bits b7b6b5b4 du registre AFRH
+	// methode 3 pour ecrire 0010 sur les bits b3b2b1b0 et sur les bits b7b6b5b4 du registre AFRH
 	GPIOA->AFR[1] &= ~(0x000000FF);
 	GPIOA->AFR[1] |=  (0x00000022);
 
@@ -244,7 +244,7 @@ void BSP_TIMER_PWM_Init()
 
 	// Configuration frequence de comptage
 	// Prescaler : registre TIM61PSC
-	// Fck = 48MHz -> /48 = 1MHz frequence de comptage : 1ums
+	// Fck = 48MHz -> /48 = 1MHz frequence de comptage : 1us de resolution
 	TIM1->PSC = (uint16_t) 48 -1;
 
 
@@ -266,8 +266,8 @@ void BSP_TIMER_PWM_Init()
 	TIM1->CCMR1 |= (0x06 << 12) | TIM_CCMR1_OC2PE;
 
 	// Definir les valeurs initiales pour le rapport cyclique des 2 PWM 
-	TIM1->CCR1 = 7500;     // PA8 = AF2 = TIM1_CH1 (70%)
-	TIM1->CCR2 = 1100;	   // PA9 = AF2 = TIM1_CH2 (10%)
+	TIM1->CCR1 = 1500;
+	TIM1->CCR2 = 1500;
 
 	// Activer les sorties 
 	TIM1->CCER |= TIM_CCER_CC1E | TIM_CCER_CC2E;
