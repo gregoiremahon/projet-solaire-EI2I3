@@ -28,7 +28,7 @@ int main()
     while(1){
 			
 			// Le code commenté ci dessous permet de faire tourner la tourelle (aller retour)
-        /*BSP_LED_Toggle();
+       /* BSP_LED_Toggle();
         BSP_DELAY_ms(20);
         
         if (direction == 1) {
@@ -48,29 +48,43 @@ int main()
         }
 
         TIM1->CCR1 = pulse_A;
-        TIM1->CCR2 = pulse_B;*/
-				
+        TIM1->CCR2 = pulse_B;
+				*/
 		BSP_LED_Toggle();
-    // Canal 10 (PC2)
+		 // Canal 10 (PC2)
     ADC1->CHSELR = ADC_CHSELR_CHSEL10;
     ADC1->CR |= (1<<2); // Démarrer la conversion
     while((ADC1->ISR & (1<<2)) != (1<<2)); // Attente de la fin de conversion
     result = (ADC1->DR)/1.23;
-    mon_printf("ADC1 (PC2) value = %d\r\n", (int)result);
+		if (result >= 3329){
+			mon_printf("ADC1 (PC2) SATURE (PAS DE LUMIERE)\r\n");
+			}
+		else{
+			mon_printf("ADC1 (PC2) value = %d\r\n", (int)result);}
     
     // Canal 11 (PC0)
     ADC1->CHSELR = ADC_CHSELR_CHSEL11;
     ADC1->CR |= (1<<2); // Démarrer la conversion
     while((ADC1->ISR & (1<<2)) != (1<<2)); // Attente de la fin de conversion
     result = (ADC1->DR)/1.23;
-    mon_printf("ADC2 (PC0) value = %d\r\n", (int)result);
-
+		if (result >= 3329){
+			mon_printf("ADC2 (PC0) SATURE (PAS DE LUMIERE)\r\n");
+			}
+		else{
+			mon_printf("ADC2 (PC0) value = %d\r\n", (int)result);
+		}
+    
     // Canal 12 (PC2)
     ADC1->CHSELR = ADC_CHSELR_CHSEL12;
     ADC1->CR |= (1<<2); // Démarrer la conversion
     while((ADC1->ISR & (1<<2)) != (1<<2)); // Attente de la fin de conversion
     result = (ADC1->DR)/1.23;
-    mon_printf("ADC3 (PC1) value = %d\r\n\n\n", (int)result);
+		if (result >= 3329){
+			mon_printf("ADC3 (PC1) SATURE (PAS DE LUMIERE)\r\n");
+			}
+		else{
+			mon_printf("ADC3 (PC1) value = %d\r\n\n\n", (int)result);
+		}
     
     BSP_DELAY_ms(600);
 	}

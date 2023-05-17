@@ -25,15 +25,29 @@ compiling bsp.c...
 ..\drivers\bsp.c: 3 warnings, 0 errors
 compiling delay.c...
 linking...
-Program Size: Code=4882 RO-data=354 RW-data=20 ZI-data=1636  
+Program Size: Code=5050 RO-data=354 RW-data=20 ZI-data=1636  
 ".\TP2_ADC.axf" - 0 Error(s), 4 Warning(s).
 Load "C:\\Users\\gregm\\Documents\\EI2I 3\\Microcontroleurs\\Projet_Solaire_MAHON_LELONG_REVILLOT\\projet-solaire-EI2I3\\code\\Projet_Solaire\\keil\\TP2_ADC.axf" 
 Erase Done.
 Programming Done.
 Verify OK.
-</pre>
-</body>
-</html>
-ramming Done.
-Verify OK.
-ad failed  -  Could not load file 'C:\Users\gregm\Documents\EI2I 3\Microcontroleurs\Projet_Solaire_MAHON_LELONG_REVILLOT\projet-solaire-EI2I3\code\Projet_Solaire\keil\TP2_ADC.axf'
+int direction = 1;
+..\app\main.c: 1 warning, 9 errors
+compiling printf-stdarg.c...
+compiling bsp.c...
+..\drivers\bsp.c(331): warning:  #61-D: integer operation result is out of range
+        ADC1->CFGR2 |= (0x01 <<31UL);
+..\drivers\bsp.c(331): warning:  #68-D: integer conversion resulted in a change of sign
+        ADC1->CFGR2 |= (0x01 <<31UL);
+..\drivers\bsp.c(360): warning:  #1-D: last line of file ends without a newline
+  }
+..\drivers\bsp.c: 3 warnings, 0 errors
+compiling delay.c...
+".\TP2_ADC.axf" - 9 Error(s), 4 Warning(s).
+Target not created
+:  #1-D: last line of file ends without a newline
+  }
+..\drivers\bsp.c: 3 warnings, 0 errors
+compiling delay.c...
+".\TP2_ADC.axf" - 9 Error(s), 5 Warning(s).
+Target not created
