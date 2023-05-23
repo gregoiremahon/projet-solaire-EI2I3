@@ -1,16 +1,41 @@
 #include "stm32f0xx.h"
+
 #include "bsp.h"
+
 #include "delay.h"
+
 #include "main.h"
 
+#include <math.h>
 
-int rotationCounter = 0;
-int main()
-{
-    uint16_t pulse_A = 1000; // 5% de la période (20 ms)
-    uint16_t pulse_B = 3000; // 10% de la période (20 ms)
-    int direction = 1;
-    int result;
+#define false 0
+
+#define true 1
+
+static void SystemClock_Config(void);
+
+int main() {
+
+
+
+	// Declaration Variables
+
+	uint16_t moyenne;
+	uint16_t diff_photo1_2;
+	uint16_t diff_photo12_3;
+	uint16_t photo1;
+	uint16_t photo2;
+	uint16_t photo3;
+	uint16_t tolerance1;
+	uint16_t tolerance2;
+	uint8_t horizon;
+	uint8_t vertical;
+
+	uint16_t angle_servo1;
+	uint16_t angle_servo2;
+
+
+
     // Configure System Clock
     BSP_Console_Init();
 		mon_printf("La Console est ready!\r\n");
@@ -21,76 +46,88 @@ int main()
 	
 		BSP_ADC_Init();
 	  mon_printf("ADC ready!\r\n");
-    TIM1->CCR1 = pulse_A;
-    TIM1->CCR2 = pulse_B;
     
-	  
-    while(1){
-			
-			// Le code commenté ci dessous permet de faire tourner la tourelle (aller retour)
-       /* BSP_LED_Toggle();
-        BSP_DELAY_ms(20);
-        
-        if (direction == 1) {
-            pulse_A += 10;
-            pulse_B -= 10;
-
-            if (pulse_A >= 3000 || pulse_B <= 1000) {
-                direction = -1;
-            }
-        } else {
-            pulse_A -= 10;
-            pulse_B += 10;
-
-            if (pulse_A <= 1000 || pulse_B >= 3000) {
-                direction = 1;
-            }
-        }
-
-        TIM1->CCR1 = pulse_A;
-        TIM1->CCR2 = pulse_B;
-				*/
-		BSP_LED_Toggle();
-		 // Canal 10 (PC2)
-    ADC1->CHSELR = ADC_CHSELR_CHSEL10;
-    ADC1->CR |= (1<<2); // Démarrer la conversion
-    while((ADC1->ISR & (1<<2)) != (1<<2)); // Attente de la fin de conversion
-    result = (ADC1->DR)/1.23;
-		if (result >= 3329){
-			mon_printf("ADC1 (PC2) SATURE (PAS DE LUMIERE)\r\n");
-			}
-		else{
-			mon_printf("ADC1 (PC2) value = %d\r\n", (int)result);}
     
-    // Canal 11 (PC0)
-    ADC1->CHSELR = ADC_CHSELR_CHSEL11;
-    ADC1->CR |= (1<<2); // Démarrer la conversion
+
+
+
+	//Initialize state variables
+
+	angle_servo1 = 2100;
+	angle_servo2 = 2100;
+	tolerance1 = 100;
+	tolerance2 = 100;
+
+
+
+	while(1){
+		TIM1->CCR1 = angle_servo1;
+		TIM1->CCR2 = angle_servo2;
+		// Canal 10 (PC2)
+		ADC1->CHSELR = ADC_CHSELR_CHSEL10;
+    ADC1->CR |= (1<<2); // DÃ©marrer la conversion
     while((ADC1->ISR & (1<<2)) != (1<<2)); // Attente de la fin de conversion
-    result = (ADC1->DR)/1.23;
-		if (result >= 3329){
-			mon_printf("ADC2 (PC0) SATURE (PAS DE LUMIERE)\r\n");
+		photo1 = (ADC1->DR)/1.23;
+		// Canal 11 (PC0)
+		ADC1->CHSELR = ADC_CHSELR_CHSEL11;
+		ADC1->CR |= (1<<2);
+		while ((ADC1->ISR & (1<<2)) != (1<<2));
+		photo2 = (ADC1->DR)/1.23;
+		// Canal 12 (PC2)
+		ADC1->CHSELR = ADC_CHSELR_CHSEL12;
+		ADC1->CR |= (1<<2);
+		while ((ADC1->ISR & (1<<2)) != (1<<2));
+		photo3 = (ADC1->DR)/1.23;
+
+		//TRAITEMENT VALEUR
+		moyenne = (photo1 + photo2) / 2;
+
+		// Gestion de l'angle PWM
+		// Horizon
+
+		if (photo1 < photo2){
+			diff_photo1_2 = abs(photo2-photo1);
+			if(diff_photo1_2 > tolerance1){
+				if (angle_servo2 < 2400){
+					angle_servo2++;
+				}
 			}
-		else{
-			mon_printf("ADC2 (PC0) value = %d\r\n", (int)result);
 		}
-    
-    // Canal 12 (PC2)
-    ADC1->CHSELR = ADC_CHSELR_CHSEL12;
-    ADC1->CR |= (1<<2); // Démarrer la conversion
-    while((ADC1->ISR & (1<<2)) != (1<<2)); // Attente de la fin de conversion
-    result = (ADC1->DR)/1.23;
-		if (result >= 3329){
-			mon_printf("ADC3 (PC1) SATURE (PAS DE LUMIERE)\r\n");
+		if (photo2 < photo1){
+			diff_photo1_2 = abs(photo1-photo2);
+			if(diff_photo1_2 > tolerance1){
+				if (angle_servo2 > 600){
+					angle_servo2--;
+				}
 			}
-		else{
-			mon_printf("ADC3 (PC1) value = %d\r\n\n\n", (int)result);
 		}
-    
-    BSP_DELAY_ms(600);
+
+		// Vertical
+
+		if(moyenne<photo3){
+			diff_photo12_3 = abs(moyenne-photo3);
+			if(diff_photo12_3 > tolerance2){
+				if(angle_servo1 < 2400){
+					angle_servo1++;
+				}
+			}
+		}
+		if(moyenne>photo3){
+			diff_photo12_3 = abs(photo3-moyenne);
+			if(diff_photo12_3 > tolerance2){
+				if(angle_servo1 > 2000){
+					angle_servo1--;
+				}
+			}
+		}
+
+		// Affichage des valeurs via la liaison sÃ©rie
+		mon_printf("Valeur photo resistance 1 :  = %d\r\n", photo1);
+		mon_printf("Valeur photo resistance 2 :  = %d\r\n", photo2);
+		mon_printf("Valeur photo resistance 3 :  = %d\r\n\n", photo3);
+		mon_printf("Valeur photo moyenne 12 :  = %d\r\n", moyenne);
+		mon_printf("Valeur photo angle1 :  = %d\r\n", angle_servo1);
+		mon_printf("Valeur photo angle2 :  = %d\r\n\n\n\n\n", angle_servo2);
+
 	}
 }
-
-
-// TODO : Mettre en place l'algo qui permet de corriger la position des tourelles en fonction des valeurs lues par l'ADC:
-
-// Au plus il y a de lumière, au plus la valeur de sortie du montage est faible (éclairage max -> 0V)

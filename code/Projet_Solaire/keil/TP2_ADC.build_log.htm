@@ -11,9 +11,21 @@ Rebuild target 'Target 1'
 assembling startup_stm32f072.s...
 compiling system_stm32f0xx_HSI_RC_48MHz.c...
 compiling main.c...
-..\app\main.c(12): warning:  #177-D: variable "direction" was declared but never referenced
-      int direction = 1;
-..\app\main.c: 1 warning, 0 errors
+..\app\main.c(89): warning:  #223-D: function "abs" declared implicitly
+                        diff_photo1_2 = abs(photo2-photo1);
+..\app\main.c(97): warning:  #223-D: function "abs" declared implicitly
+                        diff_photo1_2 = abs(photo1-photo2);
+..\app\main.c(108): warning:  #223-D: function "abs" declared implicitly
+                        diff_photo12_3 = abs(moyenne-photo3);
+..\app\main.c(116): warning:  #223-D: function "abs" declared implicitly
+                        diff_photo12_3 = abs(photo3-moyenne);
+..\app\main.c(31): warning:  #177-D: variable "horizon" was declared but never referenced
+        uint8_t horizon;
+..\app\main.c(32): warning:  #177-D: variable "vertical" was declared but never referenced
+        uint8_t vertical;
+..\app\main.c(15): warning:  #177-D: function "SystemClock_Config" was declared but never referenced
+  static void SystemClock_Config(void);
+..\app\main.c: 7 warnings, 0 errors
 compiling printf-stdarg.c...
 compiling bsp.c...
 ..\drivers\bsp.c(331): warning:  #61-D: integer operation result is out of range
@@ -25,29 +37,9 @@ compiling bsp.c...
 ..\drivers\bsp.c: 3 warnings, 0 errors
 compiling delay.c...
 linking...
-Program Size: Code=5050 RO-data=354 RW-data=20 ZI-data=1636  
-".\TP2_ADC.axf" - 0 Error(s), 4 Warning(s).
+Program Size: Code=4970 RO-data=354 RW-data=20 ZI-data=1636  
+".\TP2_ADC.axf" - 0 Error(s), 10 Warning(s).
 Load "C:\\Users\\gregm\\Documents\\EI2I 3\\Microcontroleurs\\Projet_Solaire_MAHON_LELONG_REVILLOT\\projet-solaire-EI2I3\\code\\Projet_Solaire\\keil\\TP2_ADC.axf" 
 Erase Done.
 Programming Done.
 Verify OK.
-int direction = 1;
-..\app\main.c: 1 warning, 9 errors
-compiling printf-stdarg.c...
-compiling bsp.c...
-..\drivers\bsp.c(331): warning:  #61-D: integer operation result is out of range
-        ADC1->CFGR2 |= (0x01 <<31UL);
-..\drivers\bsp.c(331): warning:  #68-D: integer conversion resulted in a change of sign
-        ADC1->CFGR2 |= (0x01 <<31UL);
-..\drivers\bsp.c(360): warning:  #1-D: last line of file ends without a newline
-  }
-..\drivers\bsp.c: 3 warnings, 0 errors
-compiling delay.c...
-".\TP2_ADC.axf" - 9 Error(s), 4 Warning(s).
-Target not created
-:  #1-D: last line of file ends without a newline
-  }
-..\drivers\bsp.c: 3 warnings, 0 errors
-compiling delay.c...
-".\TP2_ADC.axf" - 9 Error(s), 5 Warning(s).
-Target not created

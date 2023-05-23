@@ -8,3 +8,4 @@
 .\main.o: ..\drivers\bsp.h
 .\main.o: ..\drivers\delay.h
 .\main.o: ..\app\main.h
+.\main.o: C:\Keil\ARM\ARMCC\bin\..\include\math.h
