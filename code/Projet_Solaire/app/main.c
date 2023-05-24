@@ -54,8 +54,8 @@ int main() {
 	//Initialize state variables
 
 	angle_servo1 = 2100;
-	angle_servo2 = 2100;
-	tolerance1 = 100;
+	angle_servo2 = 1200;
+	tolerance1 = 100; // 100 both
 	tolerance2 = 100;
 
 
@@ -96,7 +96,7 @@ int main() {
 		if (photo2 < photo1){
 			diff_photo1_2 = abs(photo1-photo2);
 			if(diff_photo1_2 > tolerance1){
-				if (angle_servo2 > 600){
+				if (angle_servo2 > 600){ // 600
 					angle_servo2--;
 				}
 			}
@@ -107,7 +107,7 @@ int main() {
 		if(moyenne<photo3){
 			diff_photo12_3 = abs(moyenne-photo3);
 			if(diff_photo12_3 > tolerance2){
-				if(angle_servo1 < 2400){
+				if(angle_servo1 < 3000){ // 2400
 					angle_servo1++;
 				}
 			}
@@ -115,19 +115,21 @@ int main() {
 		if(moyenne>photo3){
 			diff_photo12_3 = abs(photo3-moyenne);
 			if(diff_photo12_3 > tolerance2){
-				if(angle_servo1 > 2000){
+				if(angle_servo1 > 1000){ // 2000
 					angle_servo1--;
 				}
 			}
 		}
 
 		// Affichage des valeurs via la liaison série
+		/*
 		mon_printf("Valeur photo resistance 1 :  = %d\r\n", photo1);
 		mon_printf("Valeur photo resistance 2 :  = %d\r\n", photo2);
 		mon_printf("Valeur photo resistance 3 :  = %d\r\n\n", photo3);
 		mon_printf("Valeur photo moyenne 12 :  = %d\r\n", moyenne);
 		mon_printf("Valeur photo angle1 :  = %d\r\n", angle_servo1);
-		mon_printf("Valeur photo angle2 :  = %d\r\n\n\n\n\n", angle_servo2);
+		mon_printf("Valeur photo angle2 :  = %d\r\n\n\n\n\n", angle_servo2);*/
 
+		BSP_DELAY_ms(1);
 	}
 }
