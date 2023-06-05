@@ -33,13 +33,13 @@ uint16_t servo_angle_2;
 int main() {
     // Configure System Clock
     BSP_Console_Init();
-    mon_printf("Console is ready!\r\n");
+    mon_printf("Intialisation de la console OK!\r\n");
 
     // Initialize LED pin
     BSP_LED_Init();
     BSP_TIMER_PWM_Init();
     BSP_ADC_Init();
-    mon_printf("ADC ready!\r\n");
+    mon_printf("Initialisation de l'ADC OK!\r\n");
 
     // Initialize state variables
     Initialize_Variables();
