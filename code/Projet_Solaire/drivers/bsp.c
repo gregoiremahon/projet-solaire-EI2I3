@@ -63,7 +63,7 @@ void BSP_LED_Off()
 
 /*
 * BSP_LED_Toggle()
-* Change etat de la LED lier a la broche PA5
+* Change etat de la LED liée a la broche PA5
 */
 void BSP_LED_Toggle()
 {
